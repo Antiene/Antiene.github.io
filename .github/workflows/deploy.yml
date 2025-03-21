@@ -1,0 +1,29 @@
+name: Jekyll Deploy
+
+on:
+  push:
+    branches:
+      - master  # 'main' 브랜치에 푸시될 때 워크플로 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Ubuntu 최신 버전에서 실행
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # 코드 체크아웃
+
+    - name: Set up Ruby 2.7.6
+      uses: ruby/setup-ruby@v1  # Ruby 2.7.6 설정
+      with:
+        ruby-version: 2.7.6  # 원하는 Ruby 버전
+
+    - name: Install dependencies
+      run: |
+        gem install bundler  # Bundler 설치
+        bundle install  # Bundler로 의존성 설치
+
+    - name: Build and deploy
+      run: |
+        jekyll build  # Jekyll 사이트 빌드
+        jekyll deploy  # Jekyll 사이트 배포
