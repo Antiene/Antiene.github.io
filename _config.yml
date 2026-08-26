@@ -1,0 +1,13 @@
+title: Antiene's Notes
+description: Ideas, experiments, and things worth remembering.
+url: "https://antiene.github.io"
+baseurl: ""
+lang: ko
+timezone: Asia/Seoul
+markdown: kramdown
+permalink: /:categories/:year/:month/:day/:title/
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md

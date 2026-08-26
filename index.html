@@ -1,0 +1,50 @@
+---
+layout: default
+title: Archive
+---
+
+<section class="archive-intro" aria-labelledby="archive-title">
+  <p class="eyebrow">PERSONAL ARCHIVE</p>
+  <h1 id="archive-title">작고 선명한 기록들</h1>
+  <p class="intro-copy">만든 것, 배운 것, 그리고 일상에서 오래 남은 생각을 모읍니다.</p>
+</section>
+
+<section class="archive-tools" aria-label="글 탐색">
+  <label class="search-field" for="post-search">
+    <span class="sr-only">글 검색</span>
+    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.15a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+    <input id="post-search" type="search" placeholder="글 검색" autocomplete="off">
+  </label>
+  <div class="category-list" aria-label="카테고리 필터">
+    <button class="category-chip is-active" type="button" data-category="all">전체 <span>{{ site.posts.size }}</span></button>
+    {% assign categories = site.categories | sort %}
+    {% for category in categories %}
+      <button class="category-chip" type="button" data-category="{{ category[0] | slugify }}">{{ category[0] }} <span>{{ category[1].size }}</span></button>
+    {% endfor %}
+  </div>
+  <p class="results-count" aria-live="polite"><span id="visible-count">{{ site.posts.size }}</span>개의 글</p>
+</section>
+
+<section class="post-archive" aria-label="포스트 목록">
+  {% assign posts_by_year = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
+  {% for year in posts_by_year %}
+    <section class="year-group" data-year-group>
+      <h2>{{ year.name }}</h2>
+      <ol>
+        {% for post in year.items %}
+          <li class="post-row" data-post data-title="{{ post.title | downcase | escape }}" data-excerpt="{{ post.excerpt | strip_html | downcase | escape }}" data-categories="{% for category in post.categories %}{{ category | slugify }} {% endfor %}">
+            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d' }}</time>
+            <article>
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              <p>{{ post.excerpt | strip_html | truncate: 105 }}</p>
+              <div class="post-tags">
+                {% for category in post.categories %}<span>{{ category }}</span>{% endfor %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      </ol>
+    </section>
+  {% endfor %}
+  <p class="empty-state" id="empty-state" hidden>조건에 맞는 글이 없습니다. 다른 카테고리나 검색어를 시도해 보세요.</p>
+</section>
